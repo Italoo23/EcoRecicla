@@ -61,10 +61,15 @@ Projeto acadêmico - v1.0
 Este projeto foi desenvolvido por estudantes da ESBAM:
 
 BRUNO DA COSTA RODRIGUES
+
 FRANCISCO VITOR ANDRADE DE FRANÇA
+
 ITALO DA SILVA DOS SANTOS
+
 RAYLAN SILVA DE MELO
+
 THAYZZA VINHOTE DE SOUZA
+
 📄 Licença
 
 Este projeto está sob a licença MIT - veja o arquivo LICENSE para mais detalhes.
