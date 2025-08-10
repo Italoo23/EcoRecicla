@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cadastrar Doações</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Verifica se o usuário está logado
+      if(localStorage.getItem('usuarioLogado') !== 'true') {
+        window.location.href = 'index.html';
+      }
+      
+      const form = document.getElementById('doacao-form');
+      const listaDoacoes = document.getElementById('lista-doacoes');
+      
+      // Carrega doações salvas
+      carregarDoacoes();
+      
+      form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const item = document.getElementById("item").value;
+        const quantidade = document.getElementById("quantidade").value;
+        const tipo = document.getElementById("tipo").value;
+        
+        if(item && quantidade && tipo) {
+          const doacao = {
+            item,
+            quantidade,
+            tipo,
+            data: new Date().toLocaleDateString()
+          };
+          
+          // Salva no localStorage
+          salvarDoacao(doacao);
+          
+          // Recarrega a lista
+          carregarDoacoes();
+          
+          // Limpa o formulário
+          form.reset();
+          
+          alert('Doação registrada com sucesso!');
+        } else {
+          alert('Por favor, preencha todos os campos!');
+        }
+      });
+      
+      function salvarDoacao(doacao) {
+        let doacoes = JSON.parse(localStorage.getItem('doacoes')) || [];
+        doacoes.push(doacao);
+        localStorage.setItem('doacoes', JSON.stringify(doacoes));
+      }
+      
+      function carregarDoacoes() {
+        const doacoes = JSON.parse(localStorage.getItem('doacoes')) || [];
+        listaDoacoes.innerHTML = '';
+        
+        if(doacoes.length === 0) {
+          listaDoacoes.innerHTML = '<p class="text-gray-500 text-center py-4">Nenhuma doação registrada ainda.</p>';
+          return;
+        }
+        
+        doacoes.forEach((doacao, index) => {
+          const div = document.createElement('div');
+          div.className = 'bg-white p-3 rounded shadow mb-2 flex justify-between items-center';
+          div.innerHTML = `
+            <div>
+              <span class="font-medium">${doacao.item}</span>
+              <span class="text-sm text-gray-600 ml-2">${doacao.quantidade}kg</span>
+              <span class="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded-full ml-2">${doacao.tipo}</span>
+            </div>
+            <div class="text-sm text-gray-500">${doacao.data}</div>
+          `;
+          listaDoacoes.appendChild(div);
+        });
+      }
+    });
+  </script>
+</head>
+<body class="bg-green-50 text-gray-800 min-h-screen flex flex-col">
+  <header class="bg-green-700 text-white py-4 px-6 shadow-md">
+    <div class="flex justify-between items-center">
+      <div>
+        <h1 class="text-2xl font-bold">🌱 Sistema de Reciclagem</h1>
+        <p class="text-sm">Cadastrar itens recicláveis</p>
+      </div>
+      <a href="dashboard.html" class="text-green-100 hover:text-white">
+        <i class="ph ph-arrow-left text-xl"></i>
+      </a>
+    </div>
+  </header>
+  <main class="flex-1 p-6">
+    <h2 class="text-xl font-semibold mb-4">Cadastrar Doação</h2>
+    <form id="doacao-form" class="bg-white p-4 rounded shadow max-w-lg mx-auto mb-6">
+      <div class="mb-4">
+        <label class="block mb-2 font-medium">Item para doar</label>
+        <input id="item" required placeholder="Ex: Garrafa PET" class="w-full p-2 border rounded" />
+      </div>
+      
+      <div class="grid grid-cols-2 gap-4 mb-4">
+        <div>
+          <label class="block mb-2 font-medium">Quantidade (kg)</label>
+          <input id="quantidade" type="number" min="0.1" step="0.1" required class="w-full p-2 border rounded" placeholder="0.5" />
+        </div>
+        <div>
+          <label class="block mb-2 font-medium">Tipo</label>
+          <select id="tipo" required class="w-full p-2 border rounded">
+            <option value="">Selecione...</option>
+            <option value="Plástico">Plástico</option>
+            <option value="Papel">Papel</option>
+            <option value="Vidro">Vidro</option>
+            <option value="Metal">Metal</option>
+            <option value="Eletrônico">Eletrônico</option>
+            <option value="Orgânico">Orgânico</option>
+          </select>
+        </div>
+      </div>
+      
+      <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 w-full">
+        Cadastrar Doação
+      </button>
+    </form>
+    
+    <h3 class="text-lg font-semibold mb-3">Minhas Doações</h3>
+    <div id="lista-doacoes" class="max-w-lg mx-auto">
+      <!-- Doações serão carregadas aqui via JavaScript -->
+    </div>
+  </main>
+  <footer class="text-center py-4 text-sm text-gray-600 bg-green-100">
+    Projeto Interdisciplinar • ESBAM • 2025
+  </footer>
+</body>
+</html>

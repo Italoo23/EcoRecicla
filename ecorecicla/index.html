@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sistema de Reciclagem</title>
+  <!-- Ícone alterado para símbolo de reciclagem -->
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/3093/3093475.png">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-image: url('recicle.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+    .bg-overlay {
+      background-color: rgba(210, 227, 204, 0.673);
+      backdrop-filter: blur(4px);
+    }
+  </style>
+</head>
+<body class="text-gray-900">
+  <div class="min-h-screen flex items-center justify-center p-4">
+    <div class="bg-overlay shadow-md rounded-lg flex flex-col md:flex-row overflow-hidden max-w-4xl w-full">
+      
+      <!-- Imagem temática (mantida original) -->
+      <div class="hidden md:block md:w-1/2">
+        <img src="meio-ambiente-guest-post1.webp"
+             alt="Reciclagem"
+             class="h-full w-full object-cover">
+      </div>
+
+      <!-- Formulário (mantido original) -->
+      <form id="login-form" class="w-full md:w-1/2 p-6">
+        <h2 class="text-2xl font-bold mb-4 text-center">Login</h2>
+        <label class="block mb-2 text-sm">Email</label>
+        <input id="email" type="email" required class="w-full p-2 border rounded mb-4" placeholder="seu@email.com" />
+        <label class="block mb-2 text-sm">Senha</label>
+        <input id="senha" type="password" required class="w-full p-2 border rounded mb-4" placeholder="••••••••" />
+        <button type="submit" class="bg-green-600 text-white w-full py-2 rounded hover:bg-green-700 transition">Entrar</button>
+        <p class="text-center mt-4 text-sm text-gray-600">Não tem conta? <a href="cadastro.html" class="text-green-600 hover:underline">Cadastre-se</a></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- Script auth.js mantido igual -->
+  <script type="module">
+    import { login } from './auth.js';
+    
+    if (localStorage.getItem('usuarioLogado') === 'true') {
+      window.location.href = 'dashboard.html';
+    }
+
+    document.getElementById('login-form').addEventListener('submit', async function(event) {
+      event.preventDefault();
+      
+      const email = document.getElementById("email").value;
+      const senha = document.getElementById("senha").value;
+
+      if (await login(email, senha)) {
+        window.location.href = 'dashboard.html';
+      } else {
+        alert('Email ou senha incorretos!');
+      }
+    });
+  </script>
+</body>
+</html>

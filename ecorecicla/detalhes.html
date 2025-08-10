@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalhes do Tópico</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Verifica se o usuário está logado
+      if(localStorage.getItem('usuarioLogado') !== 'true') {
+        window.location.href = 'index.html';
+      }
+      
+      const topico = JSON.parse(localStorage.getItem('topicoSelecionado'));
+      const formResposta = document.getElementById('form-resposta');
+      const listaRespostas = document.getElementById('lista-respostas');
+      
+      if(!topico) {
+        window.location.href = 'foruns.html';
+        return;
+      }
+      
+      // Preenche os dados do tópico
+      document.getElementById('topico-titulo').textContent = topico.titulo;
+      document.getElementById('topico-autor').textContent = `Postado por ${topico.autor}`;
+      document.getElementById('topico-data').textContent = topico.data;
+      document.getElementById('topico-mensagem').textContent = topico.mensagem;
+      
+      // Carrega respostas
+      carregarRespostas(topico.respostas);
+      
+      formResposta.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const resposta = document.getElementById("resposta").value;
+        
+        if(resposta) {
+          const novaResposta = {
+            texto: resposta,
+            autor: localStorage.getItem('usuarioEmail') || 'Anônimo',
+            data: new Date().toLocaleString()
+          };
+          
+          // Atualiza o tópico com a nova resposta
+          topico.respostas.push(novaResposta);
+          
+          // Atualiza no localStorage
+          atualizarTopico(topico);
+          
+          // Recarrega as respostas
+          carregarRespostas(topico.respostas);
+          
+          // Limpa o formulário
+          formResposta.reset();
+        } else {
+          alert('Por favor, escreva sua resposta!');
+        }
+      });
+      
+      function atualizarTopico(topicoAtualizado) {
+        let topicos = JSON.parse(localStorage.getItem('topicos')) || [];
+        const index = topicos.findIndex(t => t.titulo === topicoAtualizado.titulo && t.autor === topicoAtualizado.autor);
+        
+        if(index !== -1) {
+          topicos[index] = topicoAtualizado;
+          localStorage.setItem('topicos', JSON.stringify(topicos));
+          localStorage.setItem('topicoSelecionado', JSON.stringify(topicoAtualizado));
+        }
+      }
+      
+      function carregarRespostas(respostas) {
+        listaRespostas.innerHTML = '';
+        
+        if(respostas.length === 0) {
+          listaRespostas.innerHTML = '<p class="text-gray-500 text-center py-4">Nenhuma resposta ainda.</p>';
+          return;
+        }
+        
+        respostas.forEach(resposta => {
+          const div = document.createElement('div');
+          div.className = 'bg-white p-4 rounded shadow mb-3';
+          div.innerHTML = `
+            <div class="flex justify-between items-start">
+              <div>
+                <p class="font-medium">${resposta.autor}</p>
+                <p class="text-gray-700 mt-1">${resposta.texto}</p>
+              </div>
+              <span class="text-xs text-gray-500">${resposta.data}</span>
+            </div>
+          `;
+          listaRespostas.appendChild(div);
+        });
+      }
+    });
+  </script>
+</head>
+<body class="bg-green-50 text-gray-800 min-h-screen flex flex-col">
+  <header class="bg-green-700 text-white py-4 px-6 shadow-md">
+    <div class="flex justify-between items-center">
+      <div>
+        <h1 class="text-2xl font-bold">🌱 Sistema de Reciclagem</h1>
+        <p class="text-sm">Detalhes do tópico</p>
+      </div>
+      <a href="foruns.html" class="text-green-100 hover:text-white">
+        <i class="ph ph-arrow-left text-xl"></i>
+      </a>
+    </div>
+  </header>
+  <main class="flex-1 p-6">
+    <div class="max-w-3xl mx-auto">
+      <div class="bg-white p-4 rounded shadow mb-6">
+        <h2 id="topico-titulo" class="text-xl font-semibold"></h2>
+        <p id="topico-autor" class="text-sm text-gray-600"></p>
+        <p id="topico-data" class="text-xs text-gray-500 mb-3"></p>
+        <p id="topico-mensagem" class="text-gray-700"></p>
+      </div>
+      
+      <h3 class="text-lg font-semibold mb-3">Respostas</h3>
+      <div id="lista-respostas" class="mb-6">
+        <!-- Respostas serão carregadas aqui via JavaScript -->
+      </div>
+      
+      <form id="form-resposta" class="bg-white p-4 rounded shadow">
+        <h3 class="font-semibold mb-2">Responder</h3>
+        <textarea id="resposta" placeholder="Escreva sua resposta..." class="w-full p-2 border rounded mb-2" rows="3" required></textarea>
+        <button class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+          Enviar Resposta
+        </button>
+      </form>
+    </div>
+  </main>
+  <footer class="text-center py-4 text-sm text-gray-600 bg-green-100">
+    Projeto Interdisciplinar • ESBAM • 2025
+  </footer>
+</body>
+</html>

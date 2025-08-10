@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perfil do Usuário</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      if (localStorage.getItem('usuarioLogado') !== 'true') {
+        window.location.href = 'index.html';
+      }
+
+      const email = localStorage.getItem('usuarioEmail');
+      const nome = localStorage.getItem('usuarioNome');
+
+      if (email) {
+        document.getElementById('user-email').textContent = email;
+      }
+      if (nome) {
+        document.getElementById('user-nome').textContent = nome;
+      }
+
+      document.getElementById('logout-btn').addEventListener('click', function() {
+        localStorage.removeItem('usuarioLogado');
+        localStorage.removeItem('usuarioEmail');
+        localStorage.removeItem('usuarioNome');
+        window.location.href = 'index.html';
+      });
+    });
+  </script>
+</head>
+<body class="bg-green-50 text-gray-800 min-h-screen flex flex-col">
+  <header class="bg-green-700 text-white py-4 px-6 shadow-md">
+    <div class="flex justify-between items-center">
+      <div>
+        <h1 class="text-2xl font-bold">🌱 Sistema de Reciclagem</h1>
+        <p class="text-sm">Seus dados e histórico de ações</p>
+      </div>
+      <a href="/dashboard_tabs_funcionando.html" class="text-green-100 hover:text-white">
+        <i class="ph ph-arrow-left text-xl"></i>
+      </a>
+    </div>
+  </header>
+  <main class="flex-1 p-6">
+    <h2 class="text-xl font-semibold mb-4">Informações do Usuário</h2>
+    <div class="bg-white p-6 rounded shadow max-w-lg mx-auto space-y-3">
+      <p><strong>Nome:</strong> <span id="user-nome">-</span></p>
+      <p><strong>Email:</strong> <span id="user-email">-</span></p>
+      <p><strong>Itens Doados:</strong> 12</p>
+      <p><strong>Postagens em Fóruns:</strong> 5</p>
+      <button id="logout-btn" class="mt-4 bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 w-full">
+        Sair
+      </button>
+    </div>
+  </main>
+  <footer class="text-center py-4 text-sm text-gray-600 bg-green-100">
+    Projeto Interdisciplinar • ESBAM • 2025
+  </footer>
+</body>
+</html>

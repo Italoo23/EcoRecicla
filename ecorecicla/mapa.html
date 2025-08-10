@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mapa de Reciclagem</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body class="bg-green-50 text-gray-800 min-h-screen flex flex-col">
+  <header class="bg-green-700 text-white py-4 px-6 shadow-md">
+    <div class="flex justify-between items-center">
+      <div>
+        <h1 class="text-2xl font-bold">🌱 Sistema de Reciclagem</h1>
+        <p class="text-sm">Visualize locais de coleta próximos</p>
+      </div>
+      <a href="dashboard.html" class="text-green-100 hover:text-white">
+        <i class="ph ph-arrow-left text-xl"></i>
+      </a>
+    </div>
+  </header>
+
+  <main class="flex-1 p-6">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-xl font-semibold">Pontos de Coleta</h2>
+      <button id="add-ponto" class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 flex items-center">
+        <i class="ph ph-plus mr-1"></i> Novo
+      </button>
+    </div>
+
+    <!-- Mapa interativo -->
+    <div id="mapa" class="w-full h-96 rounded-lg shadow mb-6"></div>
+
+    <!-- Lista de locais -->
+    <div class="bg-white p-4 rounded-lg shadow">
+      <h3 class="font-semibold mb-2">Pontos próximos</h3>
+      <ul class="space-y-3">
+        <li>
+          <strong>Centro de Reciclagem Central</strong><br>
+          <small>Av. Getúlio Vargas, 123 - Centro</small><br>
+          <span class="text-xs text-gray-600">Aceita: Plástico, Papel, Metal</span>
+        </li>
+        <li>
+          <strong>EcoPosto Zona Leste</strong><br>
+          <small>Rua Floriano Peixoto, 456</small><br>
+          <span class="text-xs text-gray-600">Aceita: Vidro, Eletrônicos</span>
+        </li>
+      </ul>
+    </div>
+  </main>
+
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (localStorage.getItem('usuarioLogado') !== 'true') {
+        window.location.href = 'index.html';
+      }
+
+      // Mapa com Leaflet
+      const mapa = L.map('mapa').setView([-3.118, -60.021], 13); // Ex: Manaus
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contribuidores'
+      }).addTo(mapa);
+
+      // Pontos de coleta simulados
+      const pontos = [
+        {
+          nome: 'Centro de Reciclagem Central',
+          coords: [-3.118, -60.021],
+          descricao: 'Aceita: Plástico, Papel, Metal'
+        },
+        {
+          nome: 'EcoPosto Zona Leste',
+          coords: [-3.125, -60.015],
+          descricao: 'Aceita: Vidro, Eletrônicos'
+        }
+      ];
+
+      pontos.forEach(p => {
+        L.marker(p.coords)
+          .addTo(mapa)
+          .bindPopup(`<strong>${p.nome}</strong><br>${p.descricao}`);
+      });
+
+      // Botão de adicionar ponto
+      document.getElementById('add-ponto').addEventListener('click', function () {
+        alert('Funcionalidade de adicionar novo ponto será implementada aqui!');
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,218 @@
+/* styles.css - Estilos atualizados para o dashboard responsivo */
+
+/* Estilos base */
+body {
+  font-family: 'Poppins', sans-serif;
+  transition: background-color 0.3s, color 0.3s;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+/* Dark Mode */
+.dark-mode {
+  --primary: #4ade80;
+  --primary-dark: #22c55e;
+  --primary-light: #86efac;
+  background-color: #111827;
+  color: #f3f4f6;
+}
+
+.dark-mode .bg-white {
+  background-color: #1f2937 !important;
+  border-color: #374151 !important;
+}
+
+.dark-mode .text-gray-800 {
+  color: #f3f4f6 !important;
+}
+
+.dark-mode .text-gray-700 {
+  color: #e5e7eb !important;
+}
+
+.dark-mode .text-gray-600 {
+  color: #d1d5db !important;
+}
+
+.dark-mode .border-gray-200 {
+  border-color: #374151 !important;
+}
+
+.dark-mode .bg-gray-50 {
+  background-color: #1f2937 !important;
+}
+
+.dark-mode .bg-gray-100 {
+  background-color: #374151 !important;
+}
+
+/* Sidebar responsiva */
+.sidebar {
+  transition: transform 0.3s ease;
+  width: 100%;
+  position: fixed;
+  z-index: 40;
+}
+
+@media (min-width: 768px) {
+  .sidebar {
+    width: 16rem;
+    position: relative;
+  }
+}
+
+/* Botão de toggle para mobile */
+.sidebar-toggle {
+  display: block;
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 50;
+}
+
+@media (min-width: 768px) {
+  .sidebar-toggle {
+    display: none;
+  }
+}
+
+/* Conteúdo principal */
+.main-content {
+  margin-top: 4rem;
+}
+
+@media (min-width: 768px) {
+  .main-content {
+    margin-top: 0;
+    margin-left: 16rem;
+  }
+}
+
+/* Cards */
+.eco-card {
+  transition: all 0.3s ease;
+}
+
+.eco-card:hover {
+  transform: translateY(-0.25rem);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* Barra de progresso */
+.progress-bar {
+  height: 0.75rem;
+  background-color: #e5e7eb;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background-color: #10b981;
+  transition: width 0.5s ease;
+}
+
+/* Animações */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.pulse {
+  animation: pulse 2s infinite;
+}
+
+/* Tooltips */
+.tooltip {
+  position: relative;
+}
+
+.tooltip .tooltip-text {
+  visibility: hidden;
+  width: 120px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -60px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-size: 0.75rem;
+}
+
+.tooltip:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Abas */
+.tab-content {
+  display: none;
+  animation: fadeIn 0.5s ease;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.badge-green {
+  background-color: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+}
+
+.badge-blue {
+  background-color: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+}
+
+.badge-purple {
+  background-color: rgba(139, 92, 246, 0.1);
+  color: #8b5cf6;
+}
+
+.badge-yellow {
+  background-color: rgba(234, 179, 8, 0.1);
+  color: #eab308;
+}
+
+/* Responsividade para telas pequenas */
+@media (max-width: 640px) {
+  .stats-card h3 {
+    font-size: 1.25rem;
+  }
+  
+  .material-card {
+    margin-bottom: 1rem;
+  }
+  
+  .tab-button {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+  }
+}
+
+/* Transições suaves */
+.transition-all {
+  transition: all 0.3s ease;
+}

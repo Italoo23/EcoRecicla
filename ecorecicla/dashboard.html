@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Dashboard - EcoRecicla</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<link href="styles.css" rel="stylesheet"/>
+<script src="https://unpkg.com/@phosphor-icons/web"></script>
+<style>
+    .sidebar-hidden {
+      transform: translateX(-100%);
+    }
+
+    @media (min-width: 768px) {
+      .sidebar-hidden {
+        transform: translateX(0);
+      }
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800 min-h-screen flex">
+<!-- Sidebar -->
+<aside class="sidebar sidebar-hidden fixed md:relative w-64 bg-green-800 text-green-100 flex flex-col min-h-screen z-40 transition-transform duration-300" id="sidebar">
+<div class="p-4 flex items-center space-x-2 border-b border-green-700">
+<i class="ph ph-leaf text-2xl text-green-300"></i>
+<span class="font-bold text-lg">EcoRecicla</span>
+</div>
+<div class="mt-8">
+<div class="px-4 mb-3 text-green-300 text-xs font-semibold uppercase tracking-wider">Menu Principal</div>
+<nav>
+<a class="flex items-center px-4 py-3 bg-green-700 border-l-4 border-green-300 text-white" href="dashboard.html">
+<i class="ph ph-chart-pie text-xl mr-3"></i> <span>Dashboard</span>
+</a>
+<a class="flex items-center px-4 py-3 hover:bg-green-700" href="mapa.html">
+<i class="ph ph-map-trifold text-xl mr-3"></i> <span>Pontos de Coleta</span>
+</a>
+<a class="flex items-center px-4 py-3 hover:bg-green-700" href="doacoes.html">
+<i class="ph ph-gift text-xl mr-3"></i> <span>Doações</span>
+</a>
+<a class="flex items-center px-4 py-3 hover:bg-green-700" href="foruns.html">
+<i class="ph ph-chat-circle-text text-xl mr-3"></i> <span>Fóruns</span>
+</a>
+<a class="flex items-center px-4 py-3 hover:bg-green-700" href="perfil.html">
+<i class="ph ph-user-circle text-xl mr-3"></i> <span>Perfil</span>
+</a>
+</nav>
+</div>
+<div class="mt-auto p-4 bg-green-700 flex items-center space-x-3">
+<img alt="Perfil" class="w-10 h-10 rounded-full" src="https://ui-avatars.com/api/?name=EcoRecicla&amp;background=22c55e&amp;color=fff"/>
+<div>
+<p class="font-medium text-white" id="user-nome">Usuário</p>
+<p class="text-xs text-green-300">Eco Voluntário</p>
+</div>
+<button class="ml-auto text-green-200 hover:text-white" id="dark-mode-toggle">
+<i class="ph ph-moon text-xl"></i>
+</button>
+</div>
+</aside>
+<!-- Botão mobile para abrir/fechar sidebar -->
+<button class="md:hidden fixed bottom-4 right-4 z-50 bg-green-600 text-white p-3 rounded-full shadow-lg" id="menu-toggle">
+<i class="ph ph-list text-xl"></i>
+</button>
+<main class="flex-1 p-4 sm:p-6 max-w-7xl mx-auto overflow-y-auto">
+<!-- Banner de boas-vindas -->
+<div class="bg-gradient-to-r from-green-600 to-green-500 rounded-xl p-6 text-white shadow-lg mb-8">
+<div class="flex flex-col md:flex-row md:items-center md:justify-between">
+<div>
+<h2 class="text-2xl font-bold mb-2">Bem-vindo ao EcoRecicla!</h2>
+<p class="text-green-100">Juntos podemos fazer a diferença para um planeta mais sustentável.</p>
+</div>
+
+</div>
+</div>
+<!-- Cards de progresso -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+<div class="bg-green-500 text-white rounded-lg p-6 shadow-md">
+<h3 class="text-lg font-semibold mb-2">Total Reciclado</h3>
+<p class="text-3xl font-bold">248 kg</p>
+<p class="text-sm mt-2 text-green-100">+12% desde o mês passado</p>
+</div>
+<div class="bg-blue-500 text-white rounded-lg p-6 shadow-md">
+<h3 class="text-lg font-semibold mb-2">Pontos</h3>
+<p class="text-3xl font-bold">1.240</p>
+<p class="text-sm mt-2 text-blue-100">+8% desde o mês passado</p>
+</div>
+<div class="bg-yellow-500 text-white rounded-lg p-6 shadow-md">
+<h3 class="text-lg font-semibold mb-2">Doações</h3>
+<p class="text-3xl font-bold">37</p>
+<p class="text-sm mt-2 text-yellow-100">+5% desde o mês passado</p>
+</div>
+<div class="bg-purple-500 text-white rounded-lg p-6 shadow-md">
+<h3 class="text-lg font-semibold mb-2">Árvores Salvas</h3>
+<p class="text-3xl font-bold">12</p>
+<p class="text-sm mt-2 text-purple-100">Impacto positivo</p>
+</div>
+</div>
+<!-- Navegação por abas -->
+<div class="mb-6 border-b border-gray-200">
+<div class="flex space-x-4">
+<button class="tab-button active px-4 py-3 font-medium text-green-600" data-tab="quick-access">Acesso Rápido</button>
+<button class="tab-button px-4 py-3 font-medium text-gray-500" data-tab="materials">Materiais</button>
+<button class="tab-button px-4 py-3 font-medium text-gray-500" data-tab="tips">Dicas</button>
+<button class="tab-button px-4 py-3 font-medium text-gray-500" data-tab="activities">Atividades</button>
+</div>
+</div>
+<!-- Conteúdo da aba ativa -->
+<div class="tab-content active" id="quick-access-content">
+<div class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mb-8">
+<a class="eco-card bg-white border-l-4 border-blue-500 p-5 rounded-lg shadow-md hover:bg-blue-50 transition" href="mapa.html">
+<div class="flex items-center space-x-3">
+<div class="bg-blue-100 p-3 rounded-full">
+<i class="ph ph-map-trifold text-blue-500 text-2xl"></i>
+</div>
+<div>
+<h2 class="text-lg font-semibold">Pontos de Coleta</h2>
+<p class="text-sm text-gray-600">Encontre locais próximos.</p>
+</div>
+</div>
+</a>
+<a class="eco-card bg-white border-l-4 border-yellow-500 p-5 rounded-lg shadow-md hover:bg-yellow-50 transition" href="doacoes.html">
+<div class="flex items-center space-x-3">
+<div class="bg-yellow-100 p-3 rounded-full">
+<i class="ph ph-gift text-yellow-500 text-2xl"></i>
+</div>
+<div>
+<h2 class="text-lg font-semibold">Doações</h2>
+<p class="text-sm text-gray-600">Registre itens recicláveis.</p>
+</div>
+</div>
+</a>
+<a class="eco-card bg-white border-l-4 border-purple-600 p-5 rounded-lg shadow-md hover:bg-purple-50 transition" href="foruns.html">
+<div class="flex items-center space-x-3">
+<div class="bg-purple-100 p-3 rounded-full">
+<i class="ph ph-chat-circle-text text-purple-600 text-2xl"></i>
+</div>
+<div>
+<h2 class="text-lg font-semibold">Fóruns</h2>
+<p class="text-sm text-gray-600">Compartilhe ideias e dúvidas.</p>
+</div>
+</div>
+</a>
+<a class="eco-card bg-white border-l-4 border-gray-700 p-5 rounded-lg shadow-md hover:bg-gray-100 transition" href="perfil.html">
+<div class="flex items-center space-x-3">
+<div class="bg-gray-100 p-3 rounded-full">
+<i class="ph ph-user-circle text-gray-700 text-2xl"></i>
+</div>
+<div>
+<h2 class="text-lg font-semibold">Perfil</h2>
+<p class="text-sm text-gray-600">Veja seus dados e conquistas.</p>
+</div>
+</div>
+</a>
+</div>
+</div>
+<!-- Aba: Materiais -->
+<div class="tab-content hidden" id="materials-content">
+<h2 class="text-xl font-bold text-gray-800 mb-4">Materiais Recicláveis</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<div class="bg-white p-6 rounded-lg shadow-md">
+<div class="flex items-center mb-4">
+<div class="bg-blue-100 p-3 rounded-full mr-4">
+<i class="ph ph-bottle text-blue-500 text-xl"></i>
+</div>
+<h3 class="font-semibold">Plástico</h3>
+</div>
+<p class="text-gray-600 text-sm">Garrafas PET, embalagens, sacolas limpas. Lave antes de reciclar.</p>
+</div>
+<div class="bg-white p-6 rounded-lg shadow-md">
+<div class="flex items-center mb-4">
+<div class="bg-green-100 p-3 rounded-full mr-4">
+<i class="ph ph-newspaper text-green-500 text-xl"></i>
+</div>
+<h3 class="font-semibold">Papel</h3>
+</div>
+<p class="text-gray-600 text-sm">Jornais, revistas, caixas de papelão. Evite papéis engordurados.</p>
+</div>
+<div class="bg-white p-6 rounded-lg shadow-md">
+<div class="flex items-center mb-4">
+<div class="bg-yellow-100 p-3 rounded-full mr-4">
+<i class="ph ph-beer-bottle text-yellow-500 text-xl"></i>
+</div>
+<h3 class="font-semibold">Vidro</h3>
+</div>
+<p class="text-gray-600 text-sm">Garrafas, potes, frascos. Remova tampas e lave bem.</p>
+</div>
+<div class="bg-white p-6 rounded-lg shadow-md">
+<div class="flex items-center mb-4">
+<div class="bg-gray-100 p-3 rounded-full mr-4">
+<i class="ph ph-beer-stein text-gray-500 text-xl"></i>
+</div>
+<h3 class="font-semibold">Metal</h3>
+</div>
+<p class="text-gray-600 text-sm">Latas de alumínio, aço, tampinhas. Amasse para economizar espaço.</p>
+</div>
+<div class="bg-white p-6 rounded-lg shadow-md">
+<div class="flex items-center mb-4">
+<div class="bg-purple-100 p-3 rounded-full mr-4">
+<i class="ph ph-device-mobile-camera text-purple-500 text-xl"></i>
+</div>
+<h3 class="font-semibold">Eletrônicos</h3>
+</div>
+<p class="text-gray-600 text-sm">Celulares, computadores, pilhas. Descarte em locais específicos.</p>
+</div>
+<div class="bg-white p-6 rounded-lg shadow-md">
+<div class="flex items-center mb-4">
+<div class="bg-red-100 p-3 rounded-full mr-4">
+<i class="ph ph-leaf text-red-500 text-xl"></i>
+</div>
+<h3 class="font-semibold">Orgânicos</h3>
+</div>
+<p class="text-gray-600 text-sm">Restos de alimentos. Use para compostagem quando possível.</p>
+</div>
+</div>
+</div>
+<!-- Aba: Dicas -->
+<div class="tab-content hidden" id="tips-content">
+<h2 class="text-xl font-bold text-gray-800 mb-4">Dicas de Sustentabilidade</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="bg-white p-6 rounded-lg shadow-md">
+<div class="flex items-start mb-3">
+<i class="ph ph-lightbulb text-yellow-500 text-2xl mr-3"></i>
+<h3 class="font-semibold text-lg">Redução de Resíduos</h3>
+</div>
+<ul class="list-disc list-inside text-gray-700 space-y-2 pl-6">
+<li>Prefira produtos com menos embalagens</li>
+<li>Use sacolas retornáveis</li>
+<li>Opte por embalagens reutilizáveis</li>
+</ul>
+</div>
+<div class="bg-white p-6 rounded-lg shadow-md">
+<div class="flex items-start mb-3">
+<i class="ph ph-drop text-blue-500 text-2xl mr-3"></i>
+<h3 class="font-semibold text-lg">Economia de Água</h3>
+</div>
+<ul class="list-disc list-inside text-gray-700 space-y-2 pl-6">
+<li>Feche a torneira ao escovar os dentes</li>
+<li>Conserte vazamentos rapidamente</li>
+<li>Reaproveite água da chuva</li>
+</ul>
+</div>
+<div class="bg-white p-6 rounded-lg shadow-md">
+<div class="flex items-start mb-3">
+<i class="ph ph-bolt text-yellow-500 text-2xl mr-3"></i>
+<h3 class="font-semibold text-lg">Economia de Energia</h3>
+</div>
+<ul class="list-disc list-inside text-gray-700 space-y-2 pl-6">
+<li>Troque lâmpadas por LED</li>
+<li>Desligue aparelhos da tomada</li>
+<li>Aproveite a luz natural</li>
+</ul>
+</div>
+<div class="bg-white p-6 rounded-lg shadow-md">
+<div class="flex items-start mb-3">
+<i class="ph ph-recycle text-green-500 text-2xl mr-3"></i>
+<h3 class="font-semibold text-lg">Reciclagem Criativa</h3>
+</div>
+<ul class="list-disc list-inside text-gray-700 space-y-2 pl-6">
+<li>Transforme potes em organizadores</li>
+<li>Use garrafas PET para jardinagem</li>
+<li>Crie brinquedos com materiais reciclados</li>
+</ul>
+</div>
+</div>
+</div>
+<!-- Aba: Atividades -->
+<div class="tab-content hidden" id="activities-content">
+<h2 class="text-xl font-bold text-gray-800 mb-4">Atividades Recentes</h2>
+<div class="bg-white p-6 rounded-lg shadow-md mb-6">
+<h3 class="font-semibold text-lg mb-3">Seu Progresso</h3>
+<div class="mb-2 flex justify-between">
+<span>Meta mensal (100kg)</span>
+<span>45kg (45%)</span>
+</div>
+<div class="w-full bg-gray-200 rounded-full h-2.5">
+<div class="bg-green-600 h-2.5 rounded-full" style="width: 45%"></div>
+</div>
+</div>
+<div class="space-y-4">
+<div class="bg-white p-4 rounded-lg shadow-md flex items-start">
+<div class="bg-green-100 p-2 rounded-full mr-4">
+<i class="ph ph-check-circle text-green-500 text-xl"></i>
+</div>
+<div>
+<p class="font-medium">Você reciclou 5kg de plástico</p>
+<p class="text-sm text-gray-600">Ontem às 15:30</p>
+<p class="text-xs text-green-600 mt-1">+50 pontos</p>
+</div>
+</div>
+<div class="bg-white p-4 rounded-lg shadow-md flex items-start">
+<div class="bg-blue-100 p-2 rounded-full mr-4">
+<i class="ph ph-map-pin text-blue-500 text-xl"></i>
+</div>
+<div>
+<p class="font-medium">Visitou o EcoPosto Zona Leste</p>
+<p class="text-sm text-gray-600">3 dias atrás</p>
+</div>
+</div>
+<div class="bg-white p-4 rounded-lg shadow-md flex items-start">
+<div class="bg-purple-100 p-2 rounded-full mr-4">
+<i class="ph ph-chat-circle-text text-purple-500 text-xl"></i>
+</div>
+<div>
+<p class="font-medium">Participou no fórum "Reciclagem de Eletrônicos"</p>
+<p class="text-sm text-gray-600">1 semana atrás</p>
+<p class="text-xs text-purple-600 mt-1">+20 pontos</p>
+</div>
+</div>
+<div class="bg-white p-4 rounded-lg shadow-md flex items-start">
+<div class="bg-yellow-100 p-2 rounded-full mr-4">
+<i class="ph ph-trophy text-yellow-500 text-xl"></i>
+</div>
+<div>
+<p class="font-medium">Conquistou o selo "Reciclador Iniciante"</p>
+<p class="text-sm text-gray-600">2 semanas atrás</p>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-white p-4 rounded-lg shadow-md flex items-start">
+<div class="bg-blue-100 p-2 rounded-full mr-4">
+<i class="ph ph-map-pin text-blue-500 text-xl"></i>
+</div>
+<div>
+<p class="font-medium">Visitou o EcoPosto Zona Leste</p>
+<p class="text-sm text-gray-600">3 dias atrás</p>
+</div>
+</div>
+<div class="bg-white p-4 rounded-lg shadow-md flex items-start">
+<div class="bg-purple-100 p-2 rounded-full mr-4">
+<i class="ph ph-chat-circle-text text-purple-500 text-xl"></i>
+</div>
+<div>
+<p class="font-medium">Participou no fórum "Reciclagem de Eletrônicos"</p>
+<p class="text-sm text-gray-600">1 semana atrás</p>
+<p class="text-xs text-purple-600 mt-1">+20 pontos</p>
+</div>
+</div>
+<div class="bg-white p-4 rounded-lg shadow-md flex items-start">
+<div class="bg-yellow-100 p-2 rounded-full mr-4">
+<i class="ph ph-trophy text-yellow-500 text-xl"></i>
+</div>
+<div>
+<p class="font-medium">Conquistou o selo "Reciclador Iniciante"</p>
+<p class="text-sm text-gray-600">2 semanas atrás</p>
+</div>
+</div>
+</main>
+<!-- Scripts -->
+ <script>
+  // Preencher nome do usuário logado
+  const nomeUsuario = localStorage.getItem('usuarioNome');
+  if (nomeUsuario) {
+    document.getElementById('user-nome').textContent = nomeUsuario;
+  }
+</script>
+ <script>
+  // Toggle sidebar no mobile
+  const menuToggle = document.getElementById('menu-toggle');
+  const sidebar = document.getElementById('sidebar');
+
+  menuToggle.addEventListener('click', () => {
+    sidebar.classList.toggle('sidebar-hidden');
+  });
+</script>
+<script>
+// Tabs
+const tabButtons = document.querySelectorAll('.tab-button');
+const tabContents = document.querySelectorAll('.tab-content');
+
+tabButtons.forEach(button => {
+  button.addEventListener('click', () => {
+    // Remove classes de todos
+    tabButtons.forEach(btn => btn.classList.remove('text-green-600', 'active'));
+    tabContents.forEach(content => {
+      content.classList.remove('active');
+      content.classList.add('hidden');
+    });
+
+    // Ativa o botão atual
+    button.classList.add('text-green-600', 'active');
+
+    // Ativa o conteúdo correspondente
+    const tab = button.getAttribute('data-tab');
+    const content = document.getElementById(`${tab}-content`);
+    content.classList.remove('hidden');
+    content.classList.add('active');
+  });
+ 
+});
+ // Alternar modo escuro
+  const toggleDarkMode = document.getElementById('dark-mode-toggle');
+  const body = document.body;
+
+  // Verifica preferência salva
+  if (localStorage.getItem('modoEscuro') === 'true') {
+    body.classList.add('dark-mode');
+  }
+
+  toggleDarkMode.addEventListener('click', () => {
+    body.classList.toggle('dark-mode');
+    const isDark = body.classList.contains('dark-mode');
+    localStorage.setItem('modoEscuro', isDark);
+  });
+</script>
+
+</script>
+</body>
+</html>

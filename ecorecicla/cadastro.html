@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro - EcoRecicla</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-image: url('https://images.unsplash.com/photo-1587293852726-70cdb56c1936?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1472&q=80');
+      background-size: cover;
+      background-position: center;
+    }
+    .card-cadastro {
+      background-color: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(5px);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+  <div class="card-cadastro p-8 rounded-xl shadow-xl max-w-md w-full">
+    <div class="text-center mb-6">
+      <img src="https://cdn-icons-png.flaticon.com/512/3093/3093475.png" alt="Reciclagem" class="w-16 h-16 mx-auto mb-3 animate-spin-slow"" alt="Logo EcoRecicla" class="w-16 h-16 mx-auto mb-3">
+      <h1 class="text-2xl font-bold text-green-700">Crie sua conta</h1>
+      <p class="text-gray-600">Junte-se à nossa comunidade sustentável</p>
+    </div>
+
+    <form id="cadastro-form" class="space-y-4">
+      <div>
+        <label for="nome" class="block mb-1 font-medium text-gray-700">Nome completo</label>
+        <input type="text" id="nome" required
+               class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+               placeholder="Maria Silva">
+      </div>
+      
+      <div>
+        <label for="email" class="block mb-1 font-medium text-gray-700">E-mail</label>
+        <input type="email" id="email" required
+               class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+               placeholder="seu@email.com">
+      </div>
+      
+      <div>
+        <label for="senha" class="block mb-1 font-medium text-gray-700">Senha</label>
+        <input type="password" id="senha" required minlength="6"
+               class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+               placeholder="••••••••">
+        <p class="text-xs text-gray-500 mt-1">Mínimo 6 caracteres</p>
+      </div>
+      
+      <button type="submit" 
+              class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg transition duration-200 flex items-center justify-center">
+        <span>Cadastrar</span>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+        </svg>
+      </button>
+      
+      <p class="text-center text-sm text-gray-600">
+        Já tem uma conta? 
+        <a href="index.html" class="text-green-600 hover:text-green-800 font-medium">Faça login</a>
+      </p>
+    </form>
+  </div>
+
+  <!-- Modal de sucesso (hidden por padrão) -->
+  <div id="success-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white p-6 rounded-lg max-w-sm text-center">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-green-500 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+      </svg>
+      <h3 class="text-xl font-bold text-gray-800 mb-2">Cadastro concluído!</h3>
+      <p class="text-gray-600 mb-4">Você será redirecionado em instantes...</p>
+      <div class="w-full bg-gray-200 rounded-full h-2.5">
+        <div id="progress-bar" class="bg-green-600 h-2.5 rounded-full" style="width: 0%"></div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { registerUser } from './auth.js';
+    
+    const form = document.getElementById('cadastro-form');
+    const successModal = document.getElementById('success-modal');
+    const progressBar = document.getElementById('progress-bar');
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      
+      const nome = document.getElementById('nome').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const senha = document.getElementById('senha').value;
+
+      try {
+        const cadastroSucesso = registerUser(nome, email, senha);
+        
+        if (cadastroSucesso) {
+          // Mostra modal de sucesso
+          successModal.classList.remove('hidden');
+          
+          // Animação da barra de progresso
+          let progress = 0;
+          const interval = setInterval(() => {
+            progress += 5;
+            progressBar.style.width = `${progress}%`;
+            
+            if (progress >= 100) {
+              clearInterval(interval);
+              window.location.href = 'dashboard.html';
+            }
+          }, 100);
+        }
+      } catch (error) {
+        console.error('Erro no cadastro:', error);
+        alert('Ocorreu um erro durante o cadastro. Por favor, tente novamente.');
+      }
+    });
+
+    // Validação em tempo real
+    document.getElementById('email').addEventListener('blur', (e) => {
+      const email = e.target.value;
+      if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        e.target.classList.add('border-red-500');
+        alert('Por favor, insira um e-mail válido.');
+      } else {
+        e.target.classList.remove('border-red-500');
+      }
+    });
+  </script>
+</body>
+</html>
